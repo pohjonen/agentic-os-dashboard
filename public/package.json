@@ -1,0 +1,8 @@
+{
+  "name": "agentic-os-dashboard",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site — no build needed'"
+  }
+}

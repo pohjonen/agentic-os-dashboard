@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic OS — Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--surface:#141414;--surface-2:#1e1e1e;--text:#e8e8e8;--text-dim:#888;--accent:#d4a853;--accent-2:#b8860b;--danger:#c0392b;--success:#27ae60;--border:#2a2a2a;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+.sidebar{width:260px;background:var(--surface);border-right:1px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:24px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--accent)}
+.logo span{color:var(--text-dim);font-size:14px;letter-spacing:1px;font-family:'Inter',sans-serif;display:block;margin-top:-4px}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;color:var(--text-dim);text-decoration:none;font-size:14px;transition:.15s}
+.nav a:hover,.nav a.active{background:var(--surface-2);color:var(--text)}
+.nav a svg{width:18px;height:18px;opacity:.7}
+.main{flex:1;padding:32px;overflow-y:auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.header h1{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;font-weight:400}
+.status-pill{display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--text-dim)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:32px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:.15s}
+.card:hover{border-color:var(--accent-2);transform:translateY(-2px)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.card-title{font-size:14px;font-weight:600;color:var(--text)}
+.card-badge{font-size:11px;padding:3px 8px;border-radius:4px;background:var(--surface-2);color:var(--text-dim)}
+.card-desc{font-size:13px;color:var(--text-dim);line-height:1.5;margin-bottom:16px}
+.card-btn{width:100%;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;cursor:pointer;transition:.15s}
+.card-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+.card-btn:active{transform:scale(.98)}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--text-dim);margin-bottom:16px}
+.logs{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;font-family:'SF Mono',monospace;font-size:12px;color:var(--text-dim);max-height:240px;overflow-y:auto}
+.log-line{padding:3px 0;border-bottom:1px solid var(--surface-2)}
+.log-line:last-child{border-bottom:none}
+.log-time{color:var(--accent);margin-right:8px}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="logo">AGENTIC OS<span>Kuulu Oy — Command Center</span></div>
+  <nav class="nav">
+    <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Dashboard</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Skills</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Automations</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Memory</a>
+  </nav>
+</div>
+<div class="main">
+  <div class="header">
+    <h1>COMMAND CENTER</h1>
+    <div class="status-pill"><span class="status-dot"></span>Operational — 21:02 EEST</div>
+  </div>
+
+  <div class="section-title">ACTIVE SKILLS</div>
+  <div class="grid" id="skillsGrid">
+    <div class="card">
+      <div class="card-header"><span class="card-title">HubSpot Pipeline</span><span class="card-badge">sales</span></div>
+      <div class="card-desc">Analysoi avoin pipeline ja raportoi stagennut diilit.</div>
+      <button class="card-btn" onclick="runSkill('hubspot-pipeline')">Run Skill</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Morning Brief</span><span class="card-badge">productivity</span></div>
+      <div class="card-desc">Kerää kalenteri, diilit ja tehtävät päivän alkuun.</div>
+      <button class="card-btn" onclick="runSkill('morning-brief')">Run Skill</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Prospect Research</span><span class="card-badge">research</span></div>
+      <div class="card-desc">Enrich lead julkisista lähteistä + HubSpot-historia.</div>
+      <button class="card-btn" onclick="runSkill('prospect-research')">Run Skill</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Content Pipeline</span><span class="card-badge">content</span></div>
+      <div class="card-desc">Generoi LinkedIn/X/blogi materiaalia annetusta lähteestä.</div>
+      <button class="card-btn" onclick="runSkill('content-pipeline')">Run Skill</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Dome Sync</span><span class="card-badge">system</span></div>
+      <div class="card-desc">Synkkaa tietoa DomeDeVille:iin iCloudista ja lähteistä.</div>
+      <button class="card-btn" onclick="runSkill('dome-sync')">Run Skill</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Post-Meeting</span><span class="card-badge">productivity</span></div>
+      <div class="card-desc">Analysöi palaverin transkripti ja luo to-do:t.</div>
+      <button class="card-btn" onclick="runSkill('post-meeting')">Run Skill</button>
+    </div>
+  </div>
+
+  <div class="section-title">SYSTEM LOG</div>
+  <div class="logs" id="systemLog">
+    <div class="log-line"><span class="log-time">21:02</span>Agentic OS initialized</div>
+    <div class="log-line"><span class="log-time">21:02</span>Memory layer loaded — 4 domains</div>
+    <div class="log-line"><span class="log-time">21:02</span>Skills loaded — 6 active</div>
+  </div>
+</div>
+<script>
+const logEl = document.getElementById('systemLog');
+function log(msg){const t=new Date().toLocaleTimeString('fi-FI',{hour:'2-digit',minute:'2-digit'});logEl.insertAdjacentHTML('beforeend',`<div class="log-line"><span class="log-time">${t}</span>${msg}</div>`);logEl.scrollTop=logEl.scrollHeight;}
+function runSkill(name){log(`Running skill: ${name}...`);setTimeout(()=>log(`Skill ${name} completed successfully.`),1500);}
+</script>
+</body>
+</html>
